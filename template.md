@@ -196,3 +196,97 @@ weather_df |>
 
 Jeff rarely assigns specific colors adjusts transparency and size
 manually
+
+can use geom_hex if too many points are overlaid kind of like a density
+plot
+
+``` r
+weather_df |> 
+  ggplot(aes(x = tmin, y = tmax)) +
+  geom_hex()
+```
+
+    ## Warning: Removed 17 rows containing non-finite values (`stat_binhex()`).
+
+![](template_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+line plot can be helpful when you have repeated measures
+
+``` r
+weather_df |> 
+  filter(name == "Molokai_HI") |> 
+  ggplot(aes(x = date, y = tmax)) +
+  geom_line() +
+  geom_point()
+```
+
+    ## Warning: Removed 1 rows containing missing values (`geom_point()`).
+
+![](template_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+
+# Univariate plotting
+
+Histogram
+
+``` r
+ggplot(weather_df, aes(x = tmax, fill = name)) +
+  geom_histogram(position = "dodge")
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+    ## Warning: Removed 17 rows containing non-finite values (`stat_bin()`).
+
+![](template_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+
+to compare across groups, Jeff recommends a density plot (a smoothed
+over histogram)
+
+``` r
+ggplot(weather_df, aes(x = tmax, fill = name)) +
+  geom_density(alpha = 0.3, adjust = 2)
+```
+
+    ## Warning: Removed 17 rows containing non-finite values (`stat_density()`).
+
+![](template_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+
+defaults are usually pretty good adjust smooths over double checking can
+be helpful
+
+boxplots
+
+``` r
+ggplot(weather_df, aes(y = tmax, x = name)) +
+  geom_boxplot()
+```
+
+    ## Warning: Removed 17 rows containing non-finite values (`stat_boxplot()`).
+
+![](template_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+
+violin plots (essentially make density plot vertical then you mirror it)
+
+``` r
+ggplot(weather_df, aes(y = tmax, x = name)) +
+  geom_violin()
+```
+
+    ## Warning: Removed 17 rows containing non-finite values (`stat_ydensity()`).
+
+![](template_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+
+ridge plot creates 3 separate densites stacked onto each other
+vertically; helpful when you many groups to compare
+
+``` r
+ggplot(weather_df, aes(x = tmax, y = name)) +
+  geom_density_ridges()
+```
+
+    ## Picking joint bandwidth of 1.54
+
+    ## Warning: Removed 17 rows containing non-finite values
+    ## (`stat_density_ridges()`).
+
+![](template_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
