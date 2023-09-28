@@ -20,11 +20,99 @@ weather_df =
     name = recode(
       id, 
       USW00094728 = "CentralPark_NY", 
-      USC00519397 = "Molokai_HI",
+      USW00022534 = "Molokai_HI",
       USS0023B17S = "Waterhole_WA"),
     tmin = tmin / 10,
     tmax = tmax / 10) |>
   select(name, id, everything())
 ```
+
+
+Let's make a plot!
+
+```{r}
+ggplot(weather_df, aes(x = tmin, y = tmax)) + 
+  geom_point()
+```
+
+
+# Pipes and stuff
+useful to set up as pipe so you can do other functions along with it
+
+```{r}
+ggp_nyc_weather = 
+  weather_df |> 
+  filter(name =="CentralPark_NY") |> 
+  ggplot(aes(x = tmin, y = tmax)) +
+  geom_point()
+
+ggp_nyc_weather
+```
+
+# Fancy plot
+color applie to points and smooth curve
+```{r}
+ggplot(weather_df, aes(x = tmin, y = tmax, color = name)) +
+  geom_point() + 
+  geom_smooth()
+```
+
+color applies just to points and not to smooth
+```{r}
+ggplot(weather_df, aes(x = tmin, y = tmax)) +
+  geom_point(aes(color = name)) +
+  geom_smooth(se = FALSE)
+```
+se false to get rid of error bars
+
+use alpha shading to make points more transparent; to better see all data points
+
+```{r}
+ggplot(weather_df, aes(x = tmin, y = tmax)) +
+  geom_point(aes(color = name, alpha = 0.3)) +
+  geom_smooth(se = FALSE)
+```
+
+Plot with facets
+```{r}
+ggplot(weather_df, aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = 0.3) +
+  geom_smooth(se = FALSE) +
+  facet_grid(. ~ name)
+```
+
+automatically places graphs in alaphabetical order; can alter this
+
+diff fancy plot
+```{r}
+ggplot(weather_df, aes(x = date, y = tmax, color = name)) +
+  geom_point(aes(size = prcp, alpha = 0.3)) +
+  geom_smooth() +
+  facet_grid(. ~ name)
+```
+
+assignment of specific colors; add to component it applies to; don't put on ggplot line bc it thinks there's a variable called blue
+do this
+```{r}
+weather_df |> 
+  filter(name == "CentralPark_NY") |> 
+  ggplot(aes(x = date, y = tmax)) +
+  geom_point(color = "blue")
+
+```
+
+not this
+```{r}
+weather_df |> 
+  filter(name == "CentralPark_NY") |> 
+  ggplot(aes(x = date, y = tmax, color = "blue")) +
+  geom_point()
+```
+
+Jeff rarely assigns specific colors
+adjusts transparency and size manually 
+
+
+
 
 

@@ -31,15 +31,168 @@ weather_df =
     name = recode(
       id, 
       USW00094728 = "CentralPark_NY", 
-      USC00519397 = "Molokai_HI",
+      USW00022534 = "Molokai_HI",
       USS0023B17S = "Waterhole_WA"),
     tmin = tmin / 10,
     tmax = tmax / 10) |>
   select(name, id, everything())
 ```
 
+    ## using cached file: /Users/stephaniecalluori/Library/Caches/org.R-project.R/R/rnoaa/noaa_ghcnd/USW00094728.dly
+
+    ## date created (size, mb): 2023-09-28 10:20:07.929139 (8.524)
+
     ## file min/max dates: 1869-01-01 / 2023-09-30
+
+    ## using cached file: /Users/stephaniecalluori/Library/Caches/org.R-project.R/R/rnoaa/noaa_ghcnd/USW00022534.dly
+
+    ## date created (size, mb): 2023-09-28 10:20:18.73663 (3.83)
 
     ## file min/max dates: 1949-10-01 / 2023-09-30
 
+    ## using cached file: /Users/stephaniecalluori/Library/Caches/org.R-project.R/R/rnoaa/noaa_ghcnd/USS0023B17S.dly
+
+    ## date created (size, mb): 2023-09-28 10:20:22.054464 (0.994)
+
     ## file min/max dates: 1999-09-01 / 2023-09-30
+
+Let’s make a plot!
+
+``` r
+ggplot(weather_df, aes(x = tmin, y = tmax)) + 
+  geom_point()
+```
+
+    ## Warning: Removed 17 rows containing missing values (`geom_point()`).
+
+![](template_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
+# Pipes and stuff
+
+useful to set up as pipe so you can do other functions along with it
+
+``` r
+ggp_nyc_weather = 
+  weather_df |> 
+  filter(name =="CentralPark_NY") |> 
+  ggplot(aes(x = tmin, y = tmax)) +
+  geom_point()
+
+ggp_nyc_weather
+```
+
+![](template_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+
+# Fancy plot
+
+color applie to points and smooth curve
+
+``` r
+ggplot(weather_df, aes(x = tmin, y = tmax, color = name)) +
+  geom_point() + 
+  geom_smooth()
+```
+
+    ## `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+
+    ## Warning: Removed 17 rows containing non-finite values (`stat_smooth()`).
+
+    ## Warning: Removed 17 rows containing missing values (`geom_point()`).
+
+![](template_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+
+color applies just to points and not to smooth
+
+``` r
+ggplot(weather_df, aes(x = tmin, y = tmax)) +
+  geom_point(aes(color = name)) +
+  geom_smooth(se = FALSE)
+```
+
+    ## `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+
+    ## Warning: Removed 17 rows containing non-finite values (`stat_smooth()`).
+
+    ## Warning: Removed 17 rows containing missing values (`geom_point()`).
+
+![](template_files/figure-gfm/unnamed-chunk-6-1.png)<!-- --> se false to
+get rid of error bars
+
+use alpha shading to make points more transparent; to better see all
+data points
+
+``` r
+ggplot(weather_df, aes(x = tmin, y = tmax)) +
+  geom_point(aes(color = name, alpha = 0.3)) +
+  geom_smooth(se = FALSE)
+```
+
+    ## `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+
+    ## Warning: Removed 17 rows containing non-finite values (`stat_smooth()`).
+
+    ## Warning: Removed 17 rows containing missing values (`geom_point()`).
+
+![](template_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
+Plot with facets
+
+``` r
+ggplot(weather_df, aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = 0.3) +
+  geom_smooth(se = FALSE) +
+  facet_grid(. ~ name)
+```
+
+    ## `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+
+    ## Warning: Removed 17 rows containing non-finite values (`stat_smooth()`).
+
+    ## Warning: Removed 17 rows containing missing values (`geom_point()`).
+
+![](template_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
+automatically places graphs in alaphabetical order; can alter this
+
+diff fancy plot
+
+``` r
+ggplot(weather_df, aes(x = date, y = tmax, color = name)) +
+  geom_point(aes(size = prcp, alpha = 0.3)) +
+  geom_smooth() +
+  facet_grid(. ~ name)
+```
+
+    ## `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+
+    ## Warning: Removed 17 rows containing non-finite values (`stat_smooth()`).
+
+    ## Warning: Removed 19 rows containing missing values (`geom_point()`).
+
+![](template_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+
+assignment of specific colors; add to component it applies to; don’t put
+on ggplot line bc it thinks there’s a variable called blue do this
+
+``` r
+weather_df |> 
+  filter(name == "CentralPark_NY") |> 
+  ggplot(aes(x = date, y = tmax)) +
+  geom_point(color = "blue")
+```
+
+![](template_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+
+not this
+
+``` r
+weather_df |> 
+  filter(name == "CentralPark_NY") |> 
+  ggplot(aes(x = date, y = tmax, color = "blue")) +
+  geom_point()
+```
+
+![](template_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+
+Jeff rarely assigns specific colors adjusts transparency and size
+manually
