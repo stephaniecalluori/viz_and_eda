@@ -1,6 +1,8 @@
 Viz and Eda1
 ================
 
+can set global specifications for graphs
+
 ``` r
 library(tidyverse)
 ```
@@ -18,6 +20,12 @@ library(tidyverse)
 
 ``` r
 library(ggridges)
+
+knitr::opts_chunk$set(
+  fig.width = 6,
+  fig.asp = .6,
+  out.width = "90%"
+)
 ```
 
 ``` r
@@ -65,7 +73,7 @@ ggplot(weather_df, aes(x = tmin, y = tmax)) +
 
     ## Warning: Removed 17 rows containing missing values (`geom_point()`).
 
-![](template_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+<img src="template_files/figure-gfm/unnamed-chunk-3-1.png" width="90%" />
 
 # Pipes and stuff
 
@@ -81,7 +89,7 @@ ggp_nyc_weather =
 ggp_nyc_weather
 ```
 
-![](template_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+<img src="template_files/figure-gfm/unnamed-chunk-4-1.png" width="90%" />
 
 # Fancy plot
 
@@ -99,7 +107,7 @@ ggplot(weather_df, aes(x = tmin, y = tmax, color = name)) +
 
     ## Warning: Removed 17 rows containing missing values (`geom_point()`).
 
-![](template_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+<img src="template_files/figure-gfm/unnamed-chunk-5-1.png" width="90%" />
 
 color applies just to points and not to smooth
 
@@ -115,8 +123,8 @@ ggplot(weather_df, aes(x = tmin, y = tmax)) +
 
     ## Warning: Removed 17 rows containing missing values (`geom_point()`).
 
-![](template_files/figure-gfm/unnamed-chunk-6-1.png)<!-- --> se false to
-get rid of error bars
+<img src="template_files/figure-gfm/unnamed-chunk-6-1.png" width="90%" />
+se false to get rid of error bars
 
 use alpha shading to make points more transparent; to better see all
 data points
@@ -133,7 +141,7 @@ ggplot(weather_df, aes(x = tmin, y = tmax)) +
 
     ## Warning: Removed 17 rows containing missing values (`geom_point()`).
 
-![](template_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+<img src="template_files/figure-gfm/unnamed-chunk-7-1.png" width="90%" />
 
 Plot with facets
 
@@ -150,7 +158,7 @@ ggplot(weather_df, aes(x = tmin, y = tmax, color = name)) +
 
     ## Warning: Removed 17 rows containing missing values (`geom_point()`).
 
-![](template_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+<img src="template_files/figure-gfm/unnamed-chunk-8-1.png" width="90%" />
 
 automatically places graphs in alaphabetical order; can alter this
 
@@ -169,7 +177,7 @@ ggplot(weather_df, aes(x = date, y = tmax, color = name)) +
 
     ## Warning: Removed 19 rows containing missing values (`geom_point()`).
 
-![](template_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+<img src="template_files/figure-gfm/unnamed-chunk-9-1.png" width="90%" />
 
 assignment of specific colors; add to component it applies to; don’t put
 on ggplot line bc it thinks there’s a variable called blue do this
@@ -181,7 +189,7 @@ weather_df |>
   geom_point(color = "blue")
 ```
 
-![](template_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+<img src="template_files/figure-gfm/unnamed-chunk-10-1.png" width="90%" />
 
 not this
 
@@ -192,7 +200,7 @@ weather_df |>
   geom_point()
 ```
 
-![](template_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+<img src="template_files/figure-gfm/unnamed-chunk-11-1.png" width="90%" />
 
 Jeff rarely assigns specific colors adjusts transparency and size
 manually
@@ -208,7 +216,7 @@ weather_df |>
 
     ## Warning: Removed 17 rows containing non-finite values (`stat_binhex()`).
 
-![](template_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+<img src="template_files/figure-gfm/unnamed-chunk-12-1.png" width="90%" />
 
 line plot can be helpful when you have repeated measures
 
@@ -222,7 +230,7 @@ weather_df |>
 
     ## Warning: Removed 1 rows containing missing values (`geom_point()`).
 
-![](template_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+<img src="template_files/figure-gfm/unnamed-chunk-13-1.png" width="90%" />
 
 # Univariate plotting
 
@@ -237,7 +245,7 @@ ggplot(weather_df, aes(x = tmax, fill = name)) +
 
     ## Warning: Removed 17 rows containing non-finite values (`stat_bin()`).
 
-![](template_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+<img src="template_files/figure-gfm/unnamed-chunk-14-1.png" width="90%" />
 
 to compare across groups, Jeff recommends a density plot (a smoothed
 over histogram)
@@ -249,7 +257,7 @@ ggplot(weather_df, aes(x = tmax, fill = name)) +
 
     ## Warning: Removed 17 rows containing non-finite values (`stat_density()`).
 
-![](template_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+<img src="template_files/figure-gfm/unnamed-chunk-15-1.png" width="90%" />
 
 defaults are usually pretty good adjust smooths over double checking can
 be helpful
@@ -263,7 +271,7 @@ ggplot(weather_df, aes(y = tmax, x = name)) +
 
     ## Warning: Removed 17 rows containing non-finite values (`stat_boxplot()`).
 
-![](template_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+<img src="template_files/figure-gfm/unnamed-chunk-16-1.png" width="90%" />
 
 violin plots (essentially make density plot vertical then you mirror it)
 
@@ -274,7 +282,7 @@ ggplot(weather_df, aes(y = tmax, x = name)) +
 
     ## Warning: Removed 17 rows containing non-finite values (`stat_ydensity()`).
 
-![](template_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+<img src="template_files/figure-gfm/unnamed-chunk-17-1.png" width="90%" />
 
 ridge plot creates 3 separate densites stacked onto each other
 vertically; helpful when you many groups to compare
@@ -289,4 +297,50 @@ ggplot(weather_df, aes(x = tmax, y = name)) +
     ## Warning: Removed 17 rows containing non-finite values
     ## (`stat_density_ridges()`).
 
-![](template_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+<img src="template_files/figure-gfm/unnamed-chunk-18-1.png" width="90%" />
+
+## saving and embedding plots
+
+create separate directory where you save results
+
+``` r
+ggp_weather = 
+weather_df |> 
+  ggplot(aes(x = tmin, y = tmax)) +
+  geom_point()
+
+ggsave("results/ggp_weather.pdf", ggp_weather)
+```
+
+    ## Saving 6 x 3.6 in image
+
+    ## Warning: Removed 17 rows containing missing values (`geom_point()`).
+
+ggsave by default tries to save most recent plot; beter to explicitly
+named the plot use relative path for where to save, then explicitly cite
+path you want to save
+
+R makes a plot then sacles to fit into whatever window we’re intersted
+in
+
+``` r
+ggp_weather
+```
+
+    ## Warning: Removed 17 rows containing missing values (`geom_point()`).
+
+<img src="template_files/figure-gfm/unnamed-chunk-20-1.png" width="90%" />
+makes wider and taller but then shrinks it down to fit into same window
+pane in doc R squeeces graph into whatever fits on the page usually does
+like width 6
+
+``` r
+ggp_weather
+```
+
+    ## Warning: Removed 17 rows containing missing values (`geom_point()`).
+
+<img src="template_files/figure-gfm/unnamed-chunk-21-1.png" width="90%" />
+
+aspect ratio is width divded by height; 0.6 means make it a little wider
+than it is tall

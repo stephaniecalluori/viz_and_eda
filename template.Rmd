@@ -3,10 +3,19 @@ title: "Viz and Eda1"
 output: github_document
 ---
 
+can set global specifications for graphs
 ```{r}
 library(tidyverse)
 library(ggridges)
+
+knitr::opts_chunk$set(
+  fig.width = 6,
+  fig.asp = .6,
+  out.width = "90%"
+)
 ```
+
+
 
 
 ```{r}
@@ -170,9 +179,30 @@ ggplot(weather_df, aes(x = tmax, y = name)) +
   geom_density_ridges()
 ```
 
+## saving and embedding plots
+create separate directory where you save results
+```{r}
+ggp_weather = 
+weather_df |> 
+  ggplot(aes(x = tmin, y = tmax)) +
+  geom_point()
 
+ggsave("results/ggp_weather.pdf", ggp_weather)
+```
 
+ggsave by default tries to save most recent plot; beter to explicitly named the plot
+use relative path for where to save, then explicitly cite path you want to save
 
+R makes a plot then sacles to fit into whatever window we're intersted in 
+```{r, fig.width = 12, fig.height = 12}
+ggp_weather
+```
+makes wider and taller but then shrinks it down to fit into same window pane in doc
+R squeeces graph into whatever fits on the page
+usually does like width 6
 
+```{r, fig.width = 6, fig.asp = 0.6}
+ggp_weather
+```
 
-
+aspect ratio is width divded by height; 0.6 means make it a little wider than it is tall
